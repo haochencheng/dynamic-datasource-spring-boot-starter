@@ -1,0 +1,58 @@
+db:
+  master: master-0
+  slave: slave-0
+server:
+  servlet:
+    context-path: /
+  port: 8000
+spring:
+  # 允许覆盖bean
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    # 动态数据源配置
+    dynamic:
+      datasource:
+        d_order:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/d_order?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true
+          username: demo
+          password: demo
+      # 指定默认数据源名称
+      primary: search_item
+  shardingsphere:
+    datasource:
+      names: ${db.master},${db.slave}
+      master-0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/item_main?useSSL=false
+        username: demo
+        password: demo
+      slave-0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/item_replica?useSSL=false
+        username: demo
+        password: demo
+      # mysql主从配置
+      master-slave-rules:
+        ms_ds0:
+          masterDataSourceName: ${db.master}
+          slaveDataSourceNames: ${db.slave}
+    props:
+      sql:
+        show: true   #打印sql
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params=count: countSql        
+        

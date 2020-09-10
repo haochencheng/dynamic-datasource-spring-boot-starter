@@ -3,6 +3,7 @@ package com.baomidou.samples.mybatisplus3.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.samples.mybatisplus3.entity.User;
+import com.baomidou.samples.mybatisplus3.mapper.OrderUserMapper;
 import com.baomidou.samples.mybatisplus3.mapper.UserMapper;
 import com.baomidou.samples.mybatisplus3.mapper.UserSlaveMapper;
 import com.baomidou.samples.mybatisplus3.service.UserService;
@@ -15,7 +16,7 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
-    private UserSlaveMapper slaveMapper;
+    private OrderUserMapper slaveMapper;
 
     @Override
     public List<User> selectUsers() {
